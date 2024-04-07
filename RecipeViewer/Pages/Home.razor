@@ -1,0 +1,31 @@
+﻿@page "/"
+@using RecipeViewer.Models
+<PageTitle>Home</PageTitle>
+
+<Jumbotron Border="Border.Is0.OnAll.Rounded.OnAll"
+           TextAlignment="TextAlignment.Center"
+           Margin="Margin.Is3.OnY.IsAuto.OnX">
+    <JumbotronTitle>A simple Recipe Viewer</JumbotronTitle>
+    <JumbotronSubtitle>View recipes and their ingredients</JumbotronSubtitle>
+    <Small>Written by Andrew Beers - for demo purposes</Small>
+</Jumbotron>
+<Container Fluid="true">
+    <ListGroup Flush>
+        <Repeater TItem="RecipeListViewModel" Items="new List<RecipeListViewModel>()">
+            <ListGroupItem>
+                <Div Flex="Flex.JustifyContent.Between" Width="Width.Is100">
+                    <Heading Size="HeadingSize.Is5">@context.Title</Heading>
+                    <Button Color="Color.Primary" To="@($"/recipe/{context.Id}")">
+                        View <Icon Name="IconName.Link" />
+                    </Button>
+                </Div>
+                <Paragraph Margin="Margin.Is1.FromBottom">
+                    @context.Description
+                </Paragraph>
+                <Small TextColor="TextColor.Muted">
+                    Steps Involved: @context.StepsInvolved
+                </Small>
+            </ListGroupItem>
+        </Repeater>
+    </ListGroup>
+</Container>

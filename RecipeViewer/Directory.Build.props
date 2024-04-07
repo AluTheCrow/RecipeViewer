@@ -1,0 +1,15 @@
+<Project>
+	<!-- See https://aka.ms/dotnet/msbuild/customize for more details on customizing your build -->
+	<PropertyGroup>
+		<Date>$([System.DateTime]::Now.ToString("1.MM.dd.HHss"))</Date>
+		<AssemblyFileVersionAttribute>[assembly:System.Reflection.AssemblyFileVersion("$(Date)")]</AssemblyFileVersionAttribute>
+		<AssemblyCompanyAttribute>[assembly:System.Reflection.AssemblyCompany("The Omen Den L.L.C.")]</AssemblyCompanyAttribute>
+		<AssemblyTitleAttribute>[assembly:System.Reflection.AssemblyTitle("The Omen Den TwitchOAuthGen")]</AssemblyTitleAttribute>
+		<Title>Recipe Viewer</Title>
+		<Company>The Omen Den L.L.C.</Company>
+		<Product>Recipe Viewer</Product>
+		<Description>A simple coding exercies for LexisNexis</Description>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
+		<RepositoryUrl>https://github.com/alucardmg36/RecipeViewer</RepositoryUrl>
+	</PropertyGroup>
+</Project>
