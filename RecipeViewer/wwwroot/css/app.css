@@ -76,6 +76,33 @@ html, body {
         content: var(--blazor-load-percentage-text, "Loading");
     }
 
+.cookbook-loading {
+    -moz-animation: spin-cookbook-horizontal 1.2s infinite linear;
+    -o-animation: spin-cookbook-horizontal 1.2s infinite linear;
+    -webkit-animation: spin-cookbook-horizontal 1.2s infinite linear;
+    animation: spin-cookbook-horizontal 1.2s infinite linear;
+}
+
+@keyframes spin-cookbook-horizontal {
+    0% {
+        transform: rotateY(0deg);
+    }
+
+    100% {
+        transform: rotateY(360deg);
+    }
+}
+
+#zoomImage {
+    transition: transform 0.5s ease; /* Smooth transition for zoom effect */
+    cursor: zoom-in; /* Indicates that something can be zoomed in */
+}
+
+/* Ensure the image does not overflow its container */
+.img-container {
+    overflow: hidden;
+}
+
 code {
     color: #c02d76;
 }

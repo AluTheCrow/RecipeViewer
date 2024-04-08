@@ -33,14 +33,16 @@
                     Instructions
                 </CardTitle>
                 <CardText>
-                    <OrderedList>
+                    <DescriptionList>
                         <Repeater TItem="Instruction" Items="@_recipe.Instructions.OrderBy(x => x.Order)">
-                            <OrderedListItem Margin="Margin.Is2.FromBottom">
-                                <Strong>@context.Title</Strong>
-                                <Paragraph>@context.Description</Paragraph>
-                            </OrderedListItem>
+                            <DescriptionListTerm Margin="Margin.Is2.FromBottom" TextWeight="TextWeight.Bold">
+                                @context.Title
+                            </DescriptionListTerm>
+                            <DescriptionListDefinition>
+                                @context.Description
+                            </DescriptionListDefinition>
                         </Repeater>
-                    </OrderedList>
+                    </DescriptionList>
                 </CardText>
             </CardBody>
         </Card>

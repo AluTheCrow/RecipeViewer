@@ -1,113 +1,140 @@
-﻿@using RecipeViewer.Models
-@using RecipeViewer.Validators
-<ModalHeader>
-    <ModalTitle>@Title</ModalTitle>
-    <CloseButton />
-</ModalHeader>
-<ModalBody>
-    <Steps>
-        <Items>
-            <Step Name="Overview">Overview <Icon Name="IconName.Dashboard" /></Step>
-            <Step Name="Ingredients">Ingredients <Icon Name="IconName.ListUl" /></Step>
-            <Step Name="Instructions">Instructions <Icon Name="IconName.ListOl" /></Step>
-            <Step Name="Review">Review &amp; Save <Icon Name="IconName.Edit" /></Step>
-        </Items>
-        <Content>
-            <StepPanel Name="Overview">
-                <Field>
-                    <FieldLabel>
-                        Title
-                    </FieldLabel>
-                    <FieldBody>
-                        <TextEdit InputMode="TextInputMode.Text" />
-                    </FieldBody>
-                </Field>
-                <Field>
-                    <FieldLabel>
-                        Description
-                    </FieldLabel>
-                    <FieldBody>
-                        <Markdown Value="@_markdownValue" ValueChanged="@OnMarkdownValueChangedAsync" PreviewRender="@PreviewRenderAsync" />
-                    </FieldBody>
-                </Field>
-            </StepPanel>
-            <StepPanel Name="Ingredients">
-                <DataGrid TItem="Ingredient"
-                          Data="@_ingredients"
-                          @bind-SelectedRow="@_selectedIngredient"
-                          Editable
-                          Responsive
-                          UseValidation
-                          ValidationsSummaryLabel="The following validation errors have occurred"
-                          ShowValidationsSummary
-                          ValidationsHandlerType="typeof(IngredientValidator)"
-                          CommandMode="DataGridCommandMode.ButtonRow"
-                          EditMode="DataGridEditMode.Form">
-                    <DataGridColumns>
-                        <DataGridCommandColumn NewCommandAllowed="false" EditCommandAllowed="false" DeleteCommandAllowed="false" CancelCommandAllowed>
-                            <SaveCommandTemplate>
-                                <Button ElementId="btnSaveIngredient" Type="ButtonType.Submit" PreventDefaultOnSubmit Color="Color.Primary" Clicked="@context.Clicked">@context.LocalizationString</Button>
-                            </SaveCommandTemplate>
-                            <CancelCommandTemplate>
-                                <Button ElementId="btnCancelIngredient" Color="Color.Secondary" Clicked="@context.Clicked">@context.LocalizationString</Button>
-                            </CancelCommandTemplate>
-                        </DataGridCommandColumn>
-                        <DataGridColumn Field="@nameof(Ingredient.Name)" Editable />
-                        <DataGridNumericColumn Field="@nameof(Ingredient.Quantity)" Editable />
-                        <DataGridColumn Field="@nameof(Ingredient.Unit)" Editable />
-                    </DataGridColumns>
-                    <ButtonRowTemplate>
-                        <Button Color="Color.Success" Clicked="@context.NewCommand.Clicked">New</Button>
-                        <Button Color="Color.Primary" Disabled="true" Clicked="@context.EditCommand.Clicked">Edit</Button>
-                        <Button Color="Color.Danger" Disabled="true" Clicked="@context.DeleteCommand.Clicked">Delete</Button>
-                    </ButtonRowTemplate>
-                </DataGrid>
-            </StepPanel>
-            <StepPanel Name="Instructions">
-                <DataGrid TItem="Instruction"
-                          Data="@_instructions"
-                          @bind-SelectedRow="@_selectedInstruction"
-                          Editable
-                          Responsive
-                          UseValidation
-                          ValidationsSummaryLabel="The following validation errors have occurred"
-                          ShowValidationsSummary
-                          ValidationsHandlerType="typeof(InstructionValidator)"
-                          CommandMode="DataGridCommandMode.ButtonRow"
-                          EditMode="DataGridEditMode.Form">
-                    <DataGridColumns>
-                        <DataGridCommandColumn NewCommandAllowed="false" EditCommandAllowed="false" DeleteCommandAllowed="false" CancelCommandAllowed>
-                            <SaveCommandTemplate>
-                                <Button ElementId="btnSaveInstruction" Type="ButtonType.Submit" PreventDefaultOnSubmit Color="Color.Primary" Clicked="@context.Clicked">@context.LocalizationString</Button>
-                            </SaveCommandTemplate>
-                            <CancelCommandTemplate>
-                                <Button ElementId="btnCancelInstruction" Color="Color.Secondary" Clicked="@context.Clicked">@context.LocalizationString</Button>
-                            </CancelCommandTemplate>
-                        </DataGridCommandColumn>
-                        <DataGridNumericColumn Field="@nameof(Instruction.Order)" Editable />
-                        <DataGridColumn Field="@nameof(Instruction.Title)" Editable />
-                        <DataGridColumn Field="@nameof(Instruction.Description)" Editable />
-                    </DataGridColumns>
-                    <ButtonRowTemplate>
-                        <Button Color="Color.Success" Clicked="@context.NewCommand.Clicked">New</Button>
-                        <Button Color="Color.Primary" Disabled="true" Clicked="@context.EditCommand.Clicked">Edit</Button>
-                        <Button Color="Color.Danger" Disabled="true" Clicked="@context.DeleteCommand.Clicked">Delete</Button>
-                    </ButtonRowTemplate>
-                </DataGrid>
-            </StepPanel>
-            <StepPanel Name="Review">
-            <Field>
-                <FieldLabel>
-                    Review
-                </FieldLabel>
-                <FieldBody>
-                    <MemoEdit />
-                </FieldBody>
-            </Field>
-            </StepPanel>
-        </Content>
-    </Steps>
-</ModalBody>
+﻿<Card Border="Border.Is0.OnAll.Rounded.OnAll">
+    <CardBody>
+        <Steps @ref="@_stepsRef" @bind-SelectedStep="@_selectedStep" NavigationAllowed="@CanNavigateTo">
+            <Items>
+                <Step Name="1">Overview <Icon Name="IconName.Dashboard" /></Step>
+                <Step Name="2">Ingredients <Icon Name="IconName.ListUl" /></Step>
+                <Step Name="3">Instructions <Icon Name="IconName.ListOl" /></Step>
+                <Step Name="4">Review &amp; Save <Icon Name="IconName.Edit" /></Step>
+            </Items>
+            <Content>
+                <StepPanel Name="1">
+                    <Field>
+                        <FieldLabel>
+                            Title
+                        </FieldLabel>
+                        <FieldBody>
+                            <TextEdit InputMode="TextInputMode.Text" @bind-Text="_recipe.Title" />
+                        </FieldBody>
+                    </Field>
+                    <Field>
+                        <FieldLabel>
+                            Description
+                        </FieldLabel>
+                        <FieldBody>
+                            <MemoEdit @bind-Text="@_markdownValue" />
+                        </FieldBody>
+                    </Field>
+                </StepPanel>
+                <StepPanel Name="2">
+                    <DataGrid
+                        @ref="@_ingredientDataGrid"
+                        TItem="Ingredient"
+                        Data="@_ingredients"
+                        @bind-SelectedRow="@_selectedIngredient"
+                        Editable
+                        Responsive
+                        ShowPager
+                        UseValidation
+                        ValidationsSummaryLabel="The following validation errors have occurred"
+                        ShowValidationsSummary
+                        CommandMode="DataGridCommandMode.ButtonRow"
+                        EditMode="DataGridEditMode.Form">
+                        <EmptyTemplate>
+                            <Paragraph>
+                                No ingredients have been added yet.
+                            </Paragraph>
+                        </EmptyTemplate>
+                        <DataGridColumns>
+                            <DataGridCommandColumn NewCommandAllowed="false" EditCommandAllowed="false" DeleteCommandAllowed="false" CancelCommandAllowed>
+                                <SaveCommandTemplate>
+                                    <Button ElementId="btnSaveIngredient" Type="ButtonType.Submit" PreventDefaultOnSubmit Color="Color.Primary" Clicked="@context.Clicked">@context.LocalizationString</Button>
+                                </SaveCommandTemplate>
+                                <CancelCommandTemplate>
+                                    <Button ElementId="btnCancelIngredient" Color="Color.Secondary" Clicked="@context.Clicked">@context.LocalizationString</Button>
+                                </CancelCommandTemplate>
+                            </DataGridCommandColumn>
+                            <DataGridColumn Field="@nameof(Ingredient.Name)" Caption="Name" Editable />
+                            <DataGridNumericColumn Field="@nameof(Ingredient.Quantity)" Caption="Quantity" Editable />
+                            <DataGridColumn Field="@nameof(Ingredient.Unit)" Caption="Units" Editable />
+                        </DataGridColumns>
+                        <ButtonRowTemplate>
+                            <Button Color="Color.Success" Clicked="@context.NewCommand.Clicked">New</Button>
+                            <Button Color="Color.Primary" Disabled="true" Clicked="@context.EditCommand.Clicked">Edit</Button>
+                            <Button Color="Color.Danger" Disabled="true" Clicked="@context.DeleteCommand.Clicked">Delete</Button>
+                        </ButtonRowTemplate>
+                    </DataGrid>
+                </StepPanel>
+                <StepPanel Name="3">
+                    <DataGrid TItem="Instruction"
+                              Data="@_instructions"
+                              @ref="@_instructionDataGrid"
+                              @bind-SelectedRow="@_selectedInstruction"
+                              Editable
+                              Responsive
+                              ShowPager
+                              UseValidation
+                              ValidationsSummaryLabel="The following validation errors have occurred"
+                              ShowValidationsSummary
+                              CommandMode="DataGridCommandMode.ButtonRow"
+                              EditMode="DataGridEditMode.Form">
+                        <EmptyTemplate>
+                            <Paragraph>
+                                No instructions have been added yet.
+                            </Paragraph>
+                        </EmptyTemplate>
+                        <DataGridColumns>
+                            <DataGridCommandColumn NewCommandAllowed="false" EditCommandAllowed="false" DeleteCommandAllowed="false" CancelCommandAllowed>
+                                <SaveCommandTemplate>
+                                    <Button ElementId="btnSaveInstruction" Type="ButtonType.Submit" PreventDefaultOnSubmit Color="Color.Primary" Clicked="@context.Clicked">@context.LocalizationString</Button>
+                                </SaveCommandTemplate>
+                                <CancelCommandTemplate>
+                                    <Button ElementId="btnCancelInstruction" Color="Color.Secondary" Clicked="@context.Clicked">@context.LocalizationString</Button>
+                                </CancelCommandTemplate>
+                            </DataGridCommandColumn>
+                            <DataGridNumericColumn Field="@nameof(Instruction.Order)" Editable="false"/>
+                            <DataGridColumn Field="@nameof(Instruction.Title)" Caption="Title" Editable/>
+                            <DataGridColumn Field="@nameof(Instruction.Description)" Caption="Description" Editable/>
+                        </DataGridColumns>
+                        <ButtonRowTemplate>
+                            <Button Color="Color.Success" Clicked="@context.NewCommand.Clicked">New</Button>
+                            <Button Color="Color.Primary" Disabled="true" Clicked="@context.EditCommand.Clicked">Edit</Button>
+                            <Button Color="Color.Danger" Disabled="true" Clicked="@context.DeleteCommand.Clicked">Delete</Button>
+                        </ButtonRowTemplate>
+                    </DataGrid>
+                </StepPanel>
+                <StepPanel Name="4">
+                    <Field>
+                        <FieldLabel>
+                            Review
+                        </FieldLabel>
+                        <FieldBody>
+                            <MemoEdit />
+                        </FieldBody>
+                    </Field>
+                </StepPanel>
+            </Content>
+        </Steps>
+    </CardBody>
+    <CardActions>
+        <Div Display="Display.Flex" Class="justify-content-center">
+            <Button Color="Color.Secondary"
+                    Margin="Margin.Is2.FromEnd"
+                    Clicked="() => _stepsRef.PreviousStep()"
+                    Shadow="Shadow.Small"
+                    Type="ButtonType.Button">
+                <Icon Name="IconName.ArrowLeft" /> Previous
+            </Button>
+            <Button Color="Color.Primary"
+                    Margin="Margin.Is2.FromStart"
+                    Clicked="() => _stepsRef.NextStep()"
+                    Shadow="Shadow.Small"
+                    Type="ButtonType.Button">
+                Next <Icon Name="IconName.ArrowRight" />
+            </Button>
+        </Div>
+    </CardActions>
+</Card>
 <ModalFooter>
     <Button Color="Color.Primary" Type="ButtonType.Button" Clicked="@SaveAsync" Shadow="Shadow.Default">Save</Button>
     <Button Color="Color.Secondary" Type="ButtonType.Button" Clicked="@CancelAsync" Shadow="Shadow.Default">Cancel</Button>

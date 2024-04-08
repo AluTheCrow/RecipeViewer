@@ -1,13 +1,12 @@
 using Blazorise;
 using Blazorise.Bootstrap5;
-using Blazorise.FluentValidation;
 using Blazorise.Icons.FontAwesome;
 using Blazorise.LoadingIndicator;
-using FluentValidation;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
+using Microsoft.EntityFrameworkCore;
 using RecipeViewer;
-using RecipeViewer.Validators;
+using RecipeViewer.Data;
 using Serilog;
 using Serilog.Formatting.Compact;
 using Serilog.Sinks.SystemConsole.Themes;
@@ -36,6 +35,15 @@ try
 
     builder.Services.AddLogging(loggingBuilder => loggingBuilder.AddSerilog(dispose: true));
 
+    builder.Services.AddDbContextFactory<AppDbContext>(options =>
+        options
+            .UseSqlite($"Filename={DbConstants.RecipeDbName}")
+#if DEBUG
+            .EnableSensitiveDataLogging()
+            .EnableDetailedErrors()
+#endif
+        );
+
     builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
     builder.Services
         .AddBlazorise(options =>
@@ -46,10 +54,8 @@ try
         .AddBootstrap5Components()
         .AddBootstrap5Providers()
         .AddFontAwesomeIcons()
-        .AddLoadingIndicator()
-        .AddBlazoriseFluentValidation();
+        .AddLoadingIndicator();
 
-    builder.Services.AddValidatorsFromAssemblyContaining<RecipeValidator>();
 
     await builder.Build().RunAsync();
 }

@@ -1,5 +1,6 @@
 ﻿using Blazorise;
 using Microsoft.AspNetCore.Components;
+using Microsoft.JSInterop;
 using System.Reflection;
 
 namespace RecipeViewer.Layout;
@@ -7,7 +8,15 @@ namespace RecipeViewer.Layout;
 public partial class MainLayout : LayoutComponentBase
 {
     private Bar _sidebar;
+    [Inject] private IJSRuntime JSRuntime { get; init; } = default!;
 
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await JSRuntime.InvokeVoidAsync("initializeImageZoom");
+        }
+    }
     private static string AssemblyProductVersion
     {
         get

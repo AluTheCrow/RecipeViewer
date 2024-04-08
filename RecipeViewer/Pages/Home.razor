@@ -4,28 +4,60 @@
 
 <Jumbotron Border="Border.Is0.OnAll.Rounded.OnAll"
            TextAlignment="TextAlignment.Center"
-           Margin="Margin.Is3.OnY.IsAuto.OnX">
+           Margin="Margin.Is3.OnY.IsAuto.OnX"
+           Shadow="Shadow.Large">
     <JumbotronTitle>A simple Recipe Viewer</JumbotronTitle>
     <JumbotronSubtitle>View recipes and their ingredients</JumbotronSubtitle>
     <Small>Written by Andrew Beers - for demo purposes</Small>
 </Jumbotron>
-<Container Fluid="true">
-    <ListGroup Flush>
-        <Repeater TItem="RecipeListViewModel" Items="new List<RecipeListViewModel>()">
-            <ListGroupItem>
-                <Div Flex="Flex.JustifyContent.Between" Width="Width.Is100">
-                    <Heading Size="HeadingSize.Is5">@context.Title</Heading>
-                    <Button Color="Color.Primary" To="@($"/recipe/{context.Id}")">
-                        View <Icon Name="IconName.Link" />
-                    </Button>
-                </Div>
-                <Paragraph Margin="Margin.Is1.FromBottom">
-                    @context.Description
+<CardDeck Padding="Padding.Is3.OnX"
+          Margin="Margin.Is2.OnY">
+        <Card Shadow="Shadow.Default"
+              Background="Background.Secondary"
+              TextColor="TextColor.Light">
+            <CardBody>
+                <CardTitle Size="3">
+                    New Recipe
+                </CardTitle>
+                <Paragraph>
+                    Create a new recipe to store in the database.
                 </Paragraph>
-                <Small TextColor="TextColor.Muted">
-                    Steps Involved: @context.StepsInvolved
-                </Small>
-            </ListGroupItem>
-        </Repeater>
-    </ListGroup>
-</Container>
+            </CardBody>
+        <CardActions Padding="Padding.Is2.OnY">
+                <Button Color="Color.Primary" Clicked="@AddRecipeAsync"
+                        Block
+                        Padding="Padding.Is3.OnX"
+                        Margin="Margin.IsAuto.OnX"
+                        Shadow="Shadow.Small">
+                    Create New Recipe <Icon Name="IconName.PlusCircle" />
+                </Button>
+            </CardActions>
+        </Card>
+        <Card Shadow="Shadow.Default"
+              Background="Background.Secondary"
+              TextColor="TextColor.Light">
+            <CardBody>
+                <CardTitle Size="3">
+                    Stored Recipes
+                </CardTitle>
+                <ListGroup Flush Width="Width.Is100">
+                    <Repeater TItem="RecipeListViewModel" Items="new List<RecipeListViewModel>()">
+                        <ListGroupItem>
+                            <Div Flex="Flex.JustifyContent.Between" Width="Width.Is100">
+                                <Heading Size="HeadingSize.Is5">@context.Title</Heading>
+                                <Button Color="Color.Primary" To="@($"/recipe/{context.Id}")">
+                                    View <Icon Name="IconName.Link" />
+                                </Button>
+                            </Div>
+                            <Paragraph Margin="Margin.Is1.FromBottom">
+                                @context.Description
+                            </Paragraph>
+                            <Small TextColor="TextColor.Muted">
+                                Steps Involved: @context.StepsInvolved
+                            </Small>
+                        </ListGroupItem>
+                    </Repeater>
+                </ListGroup>
+            </CardBody>
+        </Card>
+    </CardDeck>
