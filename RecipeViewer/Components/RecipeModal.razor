@@ -14,7 +14,9 @@
                             Title
                         </FieldLabel>
                         <FieldBody>
-                            <TextEdit InputMode="TextInputMode.Text" @bind-Text="_recipe.Title" />
+                            <TextEdit InputMode="TextInputMode.Text" @bind-Text="_recipe.Title">
+                                <FieldHelp>Provide a title for your recipe: e.g. "Chocolate Chip Cookies"</FieldHelp>
+                            </TextEdit>
                         </FieldBody>
                     </Field>
                     <Field>
@@ -22,24 +24,45 @@
                             Description
                         </FieldLabel>
                         <FieldBody>
-                            <MemoEdit @bind-Text="@_markdownValue" />
+                            <MemoEdit @bind-Text="@_markdownValue">
+                                <FieldHelp>Please provide a short description for your recipe</FieldHelp>
+                            </MemoEdit>
+                        </FieldBody>
+                    </Field>
+                    <Field>
+                        <FieldLabel>
+                            Image Source <Tooltip Text="Flipping this switch will enable you to load a local image file">
+                                <Switch TValue="bool" Checked="@_isLocalImage" CheckedChanged="@OnSwitchFlippedAsync">Local Image <Icon Name="IconName.Image" /></Switch>
+                            </Tooltip>
+                        </FieldLabel>
+                        <FieldBody>
+                            @if(_isLocalImage)
+                            {
+                                <FilePicker Upload="@OnFileUploadAsync" AutoReset MaxChunkSize="@MaxChunkSize" Filter="image/*" />
+                                <FieldHelp>Upload an image file from your computer</FieldHelp>
+                            }
+                            else
+                            {
+                                <TextEdit InputMode="TextInputMode.Text" @bind-Text="@_recipe.ImageUrl">
+                                    <FieldHelp>Optional, you can supply a URL here to an image</FieldHelp>
+                                </TextEdit>
+                            }
                         </FieldBody>
                     </Field>
                 </StepPanel>
                 <StepPanel Name="2">
-                    <DataGrid
-                        @ref="@_ingredientDataGrid"
-                        TItem="Ingredient"
-                        Data="@_ingredients"
-                        @bind-SelectedRow="@_selectedIngredient"
-                        Editable
-                        Responsive
-                        ShowPager
-                        UseValidation
-                        ValidationsSummaryLabel="The following validation errors have occurred"
-                        ShowValidationsSummary
-                        CommandMode="DataGridCommandMode.ButtonRow"
-                        EditMode="DataGridEditMode.Form">
+                    <DataGrid @ref="@_ingredientDataGrid"
+                              TItem="Ingredient"
+                              Data="@_ingredients"
+                              @bind-SelectedRow="@_selectedIngredient"
+                              Editable
+                              Responsive
+                              ShowPager
+                              UseValidation
+                              ValidationsSummaryLabel="The following validation errors have occurred"
+                              ShowValidationsSummary
+                              CommandMode="DataGridCommandMode.ButtonRow"
+                              EditMode="DataGridEditMode.Form">
                         <EmptyTemplate>
                             <Paragraph>
                                 No ingredients have been added yet.
@@ -92,9 +115,9 @@
                                     <Button ElementId="btnCancelInstruction" Color="Color.Secondary" Clicked="@context.Clicked">@context.LocalizationString</Button>
                                 </CancelCommandTemplate>
                             </DataGridCommandColumn>
-                            <DataGridNumericColumn Field="@nameof(Instruction.Order)" Editable="false"/>
-                            <DataGridColumn Field="@nameof(Instruction.Title)" Caption="Title" Editable/>
-                            <DataGridColumn Field="@nameof(Instruction.Description)" Caption="Description" Editable/>
+                            <DataGridNumericColumn Field="@nameof(Instruction.Order)" Editable="false" />
+                            <DataGridColumn Field="@nameof(Instruction.Title)" Caption="Title" Editable />
+                            <DataGridColumn Field="@nameof(Instruction.Description)" Caption="Description" Editable />
                         </DataGridColumns>
                         <ButtonRowTemplate>
                             <Button Color="Color.Success" Clicked="@context.NewCommand.Clicked">New</Button>

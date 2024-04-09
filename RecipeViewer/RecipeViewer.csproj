@@ -14,13 +14,14 @@
 		<WasmStripILAfterAOT>false</WasmStripILAfterAOT>
 	</PropertyGroup>
 	<PropertyGroup>
-		<Deterministic>False</Deterministic>
+		<Deterministic>false</Deterministic>
 		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
 	</PropertyGroup>
 	<Target Name="GenerateVersionInfo" BeforeTargets="BeforeBuild">
 		<WriteLinesToFile File="Properties\VersionInfo.cs" Lines="$(AssemblyFileVersionAttribute)$([System.Environment]::NewLine)$(AssemblyCompanyAttribute)$([System.Environment]::NewLine)$(AssemblyTitleAttribute)" Overwrite="true"></WriteLinesToFile>
 	</Target>
 	<ItemGroup>
+		<PackageReference Include="BlazorDexie" Version="1.5.2" />
 		<PackageReference Include="Blazorise" Version="1.5.1" />
 		<PackageReference Include="Blazorise.Animate" Version="1.5.1" />
 		<PackageReference Include="Blazorise.Bootstrap5" Version="1.5.1" />
@@ -38,6 +39,7 @@
 		<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0" />
 		<PackageReference Include="Microsoft.Extensions.Http" Version="8.0.0" />
 		<PackageReference Include="Microsoft.Extensions.Logging" Version="8.0.0" />
+		<PackageReference Include="Microsoft.IO.RecyclableMemoryStream" Version="3.0.0" />
 		<PackageReference Include="Serilog" Version="3.1.1" />
 		<PackageReference Include="Serilog.Enrichers.Environment" Version="2.3.0" />
 		<PackageReference Include="Serilog.Enrichers.Memory" Version="1.0.4" />

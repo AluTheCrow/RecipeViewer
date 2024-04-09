@@ -4,16 +4,22 @@ using Blazorise.DataGrid;
 using Blazorise.LoadingIndicator;
 using Microsoft.AspNetCore.Components;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IO;
 using RecipeViewer.Data;
+using RecipeViewer.Data.IndexedDb;
 using RecipeViewer.Models;
 
 namespace RecipeViewer.Components;
 
 public partial class RecipeModal : ComponentBase
 {
+    private const int MaxChunkSize = 24576;
     [Inject] private ILoadingIndicatorService LoadingIndicatorService { get; init; }
     [Inject] private IModalService ModalService { get; init; }
+    [Inject] private IToastService ToastService { get; init; }
     [Inject] private IDbContextFactory<AppDbContext> DbContextFactory { get; init; }
+    [Inject] private IFileUploadRepository FileUploadRepository { get; init; }
+    [Inject] private ILogger<RecipeModal> Logger { get; init; }
     [Parameter] public string Title { get; set; } = "New Recipe";
 
     private DataGrid<Instruction> _instructionDataGrid;
@@ -27,7 +33,7 @@ public partial class RecipeModal : ComponentBase
     private Instruction _selectedInstruction;
     private readonly List<Ingredient> _ingredients = [];
     private readonly List<Instruction> _instructions = [];
-
+    private bool _isLocalImage;
     private async Task SaveAsync()
     {
         await LoadingIndicatorService.Show();
@@ -40,6 +46,34 @@ public partial class RecipeModal : ComponentBase
         await dbContext.SaveChangesAsync();
         await ModalService.Hide();
         await LoadingIndicatorService.Hide();
+    }
+
+    private async Task OnFileUploadAsync(FileUploadEventArgs e)
+    {
+        try
+        {
+            await LoadingIndicatorService.Show();
+
+            Logger.LogInformation("Uploading file {FileName} with {Length} bytes", e.File.Name, e.File.Size);
+            var uploadUrl = await FileUploadRepository.UploadFileAsync(_recipe.Id, e.File.OpenReadStream(long.MaxValue));
+            _recipe.ImageUrl = uploadUrl;
+        }
+        catch (Exception ex)
+        {
+            Logger.LogError(ex, "Error uploading file");
+            await ToastService.Error(new MarkupString($"<p>{ex.Message}"), $"{e.File.Name} failed to upload due to an exception");
+        }
+        finally
+        {
+            await LoadingIndicatorService.Hide();
+        }
+    }
+
+    private Task OnSwitchFlippedAsync(bool value)
+    {
+        _isLocalImage = value;
+        StateHasChanged();
+        return Task.CompletedTask;
     }
 
     private bool CanNavigateTo(StepNavigationContext context) =>

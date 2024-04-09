@@ -1,3 +1,14 @@
+:root {
+    /* color variables here */
+    --hljs-background: #DEE2E6; /* Bootstrap Dark Grey */
+    --hljs-text: #000; /* Bootstrap Black */
+    --hljs-comment: #6c757d; /* Bootstrap Grey */
+    --hljs-keyword: #d63384; /* Bootstrap Pink */
+    --hljs-variable: #fd7e14; /* Bootstrap Orange */
+    --hljs-string: #0dcaf0; /* Bootstrap Cyan */
+    /* Add more variables as needed */
+}
+
 html, body {
     font-family: 'Roboto', Helvetica, sans-serif;
 }
@@ -103,6 +114,64 @@ html, body {
     overflow: hidden;
 }
 
-code {
-    color: #c02d76;
+/* Custom Bootstrap 5 Theme for Highlight.js */
+.hljs {
+    padding: 1rem;
+    border-radius: 0.5rem;
+    background-color: var(--hljs-background);
+    color: var(--hljs-text);
+    box-shadow: 2px 4px 8px rgba(0, 0, 0, 0.3);
+    -webkit-box-shadow: 2px 4px 8px rgba(0, 0, 0, 0.3);
+    -moz-box-shadow: 2px 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.hljs-comment,
+.hljs-quote {
+    color: var(--hljs-comment);
+}
+
+.hljs-keyword,
+.hljs-selector-tag {
+    color: var(--hljs-keyword);
+}
+
+.hljs-variable,
+.hljs-template-variable,
+.hljs-tag,
+.hljs-name,
+.hljs-selector-id,
+.hljs-selector-class,
+.hljs-regexp,
+.hljs-deletion {
+    color: var(--hljs-variable);
+}
+
+.hljs-string,
+.hljs-symbol,
+.hljs-bullet,
+.hljs-addition {
+    color: var(--hljs-string);
+}
+
+.hljs-tag {
+    font-weight: bolder;
+}
+
+/* Continue with other styles as needed */
+
+
+.code-block {
+    position: relative;
+}
+
+.code-header {
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 5px;
+    background-color: #eee; /* Match this to your Highlight.js theme */
+    color: #333;
+    font-family: sans-serif;
+    font-size: 0.75rem;
+    border-bottom-left-radius: 4px;
 }

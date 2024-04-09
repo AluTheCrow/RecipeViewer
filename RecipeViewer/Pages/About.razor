@@ -1,0 +1,57 @@
+﻿@page "/about"
+<PageTitle>About this App</PageTitle>
+<Container Fluid="true" Shadow="Shadow.Large"
+           Background="Background.Secondary"
+           Padding="Padding.IsAuto.OnX.Is3.FromTop.Is2.FromBottom"
+           Margin="Margin.IsAuto.OnY">
+    <Row Margin="Margin.Is3.FromBottom.Is1.FromTop">
+        <Column ColumnSize="ColumnSize.IsFull.OnMobile.IsAuto.OnDesktop">
+            <Card Shadow="Shadow.Default">
+                <CardBody>
+                    <CardTitle Size="5">
+                        Summary
+                    </CardTitle>
+                    <CardText>
+                        This is a simple recipe viewer application. It was created by Andrew Beers for demo purposes. The application allows you to view recipes and their ingredients. You can also create new recipes and store them in the database.
+                        The application was created using Blazor WebAssembly and <Blazorise.Link To="https://blazorise.com" Title="Blazorise" Target="Target.Blank">Blazorise <Icon Name="IconName.Link" /></Blazorise.Link> components.
+                        We also utilize <Blazorise.Link To="https://getbootstrap.com" Title="Bootstrap CSS" Target="Target.Blank">Bootstrap 5<Icon Name="IconName.Link" /></Blazorise.Link> for styling and layout, and <Blazorise.Link To="https://fontawesome.com/" Title="Font Awesome Icons" Target="Target.Blank">FontAwesome<Icon Name="IconName.Link" /></Blazorise.Link> for icons.
+                    </CardText>
+                </CardBody>
+            </Card>
+        </Column>
+    </Row>
+    <Row Margin="Margin.Is3.OnY">
+        <Column ColumnSize="ColumnSize.IsFull.OnMobile.IsAuto.OnDesktop">
+            <Card Shadow="Shadow.Default">
+                <CardBody>
+                    <CardTitle Size="5">About the Database</CardTitle>
+                    <CardText>
+                        <Paragraph>
+                            The application uses a <Blazorise.Link To="https://www.sqlite.org/index.html" Title="Sqlite Home" Target="Target.Blank">SQLite database<Icon Name="IconName.Link" /></Blazorise.Link> to store recipes. SQLite is a lightweight, serverless database engine that is easy to use and configure. The database is created and managed using <Blazorise.Link To="https://learn.microsoft.com/en-us/ef/core/" Title="EF Core Documentation" Target="Target.Blank">Entity Framework Core<Icon Name="IconName.Link" /></Blazorise.Link> a powerful and flexible ORM for .NET.
+                            We also use <Blazorise.Link To="https://www.nuget.org/packages/Microsoft.EntityFrameworkCore.Sqlite/" Title="Microsoft.EntityFrameworkCore.Sqlite" Target="Target.Blank">Microsoft.EntityFrameworkCore.Sqlite<Icon Name="IconName.Link" /></Blazorise.Link> to provide the necessary tools and libraries to interact with the SQLite database.
+                        </Paragraph>
+                        <Paragraph>
+                            While normally SQLite is not available client-side, Blazor WebAssembly allows us to use SQLite in the browser, and we also take advantage of IndexedDB to store the database locally. This allows the application to function offline and without a server.
+                            In the future, we may consider moving to a more robust database solution, such as SQL Server or PostgreSQL, for production applications.
+                            While SQLite is great for small applications and demos, it may not be suitable for large-scale applications with high traffic and complex data requirements.
+                        </Paragraph>
+                        <Paragraph>
+                            To allow SQLite usage in the browser, we needed to adjust some items within the application's configuration.
+
+                                <pre><code id="csprojContent" class="language-xml">@CsProjConstantsForDisplay.CsProjContent</code></Pre>
+
+                        </Paragraph>
+                        <Paragraph>
+                            IndexedDB is great for storing data locally, but it is not a full-featured database and has limitations compared to traditional databases.
+                            We utilize a library called <Blazorise.Link To="https://github.com/simon-kuster/BlazorDexie" Title="Blazor Dexie Github" Target="Target.Blank">Blazor Dexie<Icon Name="IconName.Link" /></Blazorise.Link> to interact with IndexedDB and provide a more robust and flexible API for working with the database - within this we gain LINQ support and a more familiar API for working with the database. This allows us to store and retrieve images as well as text data.
+                        </Paragraph>
+                        <Paragraph>
+                            With IndexedDb storing images, we can then further leverage the browser's cache to store images and other static assets, reducing the need to download them each time the application is loaded, and provide a semi-permaent storage solution for the application.
+                            The SQLite instance stores references to the images (as urls) stored in IndexedDB, allowing us to retrieve the images when needed.
+                        </Paragraph>
+                    </CardText>
+                </CardBody>
+            </Card>
+        </Column>
+    </Row>
+</Container>

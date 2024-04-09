@@ -1,70 +1,73 @@
 ﻿@inherits LayoutComponentBase
 @layout RootLayout
-<Layout Sider>
-    <LayoutSider>
-        <LayoutSiderContent>
-            <Bar @ref="@_sidebar"
-                 ThemeContrast="ThemeContrast.Dark"
-                 Mode="BarMode.VerticalInline"
-                 CollapseMode="BarCollapseMode.Small"
-                 Breakpoint="Breakpoint.Desktop"
-                 NavigationBreakpoint="Breakpoint.Tablet">
-                <BarBrand>
-                    <BarItem>
-                        <BarLink To="">
-                            Recipe Viewer <BarIcon IconName="IconName.Apple" />
-                        </BarLink>
-                    </BarItem>
-                </BarBrand>
-                <BarMenu>
-                    <BarStart>
+<Layout>
+    <LayoutHeader>
+        <Bar ThemeContrast="ThemeContrast.Dark"
+             Background="Background.Dark"
+             Mode="BarMode.Horizontal">
+            <BarToggler Bar="@_sidebar" />
+            <BarBrand>
+                <Image ElementId="zoomImage" Source="images/cookbookIcon.svg" Style="height:48px;width:48px;" Text="A simple cookbook icon" Fluid />
+            </BarBrand>
+            <BarMenu />
+        </Bar>
+    </LayoutHeader>
+    <Layout Sider>
+        <LayoutSider>
+            <LayoutSiderContent>
+                <Bar @ref="@_sidebar"
+                     ThemeContrast="ThemeContrast.Dark"
+                     Mode="BarMode.VerticalPopout"
+                     CollapseMode="BarCollapseMode.Small"
+                     Breakpoint="Breakpoint.Desktop"
+                     NavigationBreakpoint="Breakpoint.Tablet">
+                    <BarBrand>
                         <BarItem>
                             <BarLink To="">
-                                Home <BarIcon IconName="IconName.Home" />
+                                Recipe Viewer <BarIcon IconName="IconName.Apple" />
                             </BarLink>
                         </BarItem>
-                        <BarItem>
-                            <BarLink To="recipe">
-                                Recipes <BarIcon IconName="IconName.Book" />
-                            </BarLink>
-                        </BarItem>
-                    </BarStart>
-                    <BarEnd>
-                        <BarItem>
-                            <BarDropdown>
-                                <BarDropdownMenu>
+                    </BarBrand>
+                    <BarMenu>
+                        <BarStart>
+                            <BarItem>
+                                <BarLink To="">
+                                    Home <BarIcon IconName="IconName.Home" />
+                                </BarLink>
+                            </BarItem>
+                            <BarItem>
+                                <BarLink To="recipe">
+                                    Recipes <BarIcon IconName="IconName.Book" />
+                                </BarLink>
+                            </BarItem>
+                        </BarStart>
+                        <BarEnd>
+                            <BarItem>
+                                <BarDropdown>
                                     <BarDropdownToggle>App Information <BarIcon IconName="IconName.InfoCircle" /></BarDropdownToggle>
-                                    <BarDropdownItem To="about">
-                                        About <BarIcon IconName="IconName.InfoCircle" />
-                                    </BarDropdownItem>
-                                    <BarDropdownItem>
-                                        Version - @AssemblyProductVersion <BarIcon IconName="IconName.Code" />
-                                    </BarDropdownItem>
-                                    <BarDropdownDivider />
-                                    <BarDropdownItem>
-                                        Developed By - @ApplicationDevelopmentCompany <BarIcon IconName="IconName.Building" />
-                                    </BarDropdownItem>
-                                </BarDropdownMenu>
-                            </BarDropdown>
-                        </BarItem>
-                    </BarEnd>
-                </BarMenu>
-            </Bar>
-        </LayoutSiderContent>
-    </LayoutSider>
-    <Layout>
-        <LayoutHeader>
-            <Bar ThemeContrast="ThemeContrast.Dark"
-                 Background="Background.Dark">
-                <BarToggler Bar="@_sidebar" />
-                <BarBrand>
-                        <Image ElementId="zoomImage" Source="images/cookbookIcon.svg" Style="height:48px;width:48px;" Text="A simple cookbook icon" Fluid/>
-                </BarBrand>
-                <BarMenu />
-            </Bar>
-        </LayoutHeader>
-        <LayoutContent>
-            @Body
-        </LayoutContent>
+                                    <BarDropdownMenu>
+                                        <BarDropdownItem To="about">
+                                            About <BarIcon IconName="IconName.InfoCircle" />
+                                        </BarDropdownItem>
+                                        <BarDropdownItem>
+                                            Version - @AssemblyProductVersion <BarIcon IconName="IconName.Code" />
+                                        </BarDropdownItem>
+                                        <BarDropdownDivider />
+                                        <BarDropdownItem>
+                                            Developed By - @ApplicationDevelopmentCompany <BarIcon IconName="IconName.Building" />
+                                        </BarDropdownItem>
+                                    </BarDropdownMenu>
+                                </BarDropdown>
+                            </BarItem>
+                        </BarEnd>
+                    </BarMenu>
+                </Bar>
+            </LayoutSiderContent>
+        </LayoutSider>
+        <Layout>
+            <LayoutContent>
+                @Body
+            </LayoutContent>
+        </Layout>
     </Layout>
 </Layout>
