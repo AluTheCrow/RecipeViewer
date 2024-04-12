@@ -8,8 +8,9 @@
 	</PropertyGroup>
 	<PropertyGroup>
 		<WasmBuildNative>true</WasmBuildNative>
+		<PublishedTrimmed>true</PublishedTrimmed>
 		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-		<EmccExtraLDFlags>-s WARN_ON_UNDEFINED_SYMBOLS=0</EmccExtraLDFlags>
+		<EmccExtraLDFlags>-s WARN_ON_UNDEFINED_SYMBOLS=0 -lidbfs.js</EmccExtraLDFlags>
 		<RunAOTCompilation>true</RunAOTCompilation>
 		<WasmStripILAfterAOT>false</WasmStripILAfterAOT>
 	</PropertyGroup>
@@ -31,11 +32,12 @@
 		<PackageReference Include="Blazorise.LoadingIndicator" Version="1.5.1" />
 		<PackageReference Include="Blazorise.Markdown" Version="1.5.1" />
 		<PackageReference Include="Blazorise.SpinKit" Version="1.5.1" />
-		<PackageReference Include="Markdig" Version="0.36.2" />
-		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="8.0.3" />
-		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="8.0.3" PrivateAssets="all" />
-		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.3" />
-		<PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="8.0.3" />
+		<PackageReference Include="Markdig" Version="0.37.0" />
+		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="8.0.4" />
+		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="8.0.4" PrivateAssets="all" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.4" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="8.0.4" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="8.0.4" />
 		<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0" />
 		<PackageReference Include="Microsoft.Extensions.Http" Version="8.0.0" />
 		<PackageReference Include="Microsoft.Extensions.Logging" Version="8.0.0" />

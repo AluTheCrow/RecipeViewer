@@ -41,13 +41,17 @@
                     Stored Recipes
                 </CardTitle>
                 <ListGroup Flush Width="Width.Is100">
-                    <Repeater TItem="RecipeListViewModel" Items="new List<RecipeListViewModel>()">
+                    <Repeater TItem="RecipeListViewModel" Items="_recipes">
                         <ListGroupItem>
                             <Div Flex="Flex.JustifyContent.Between" Width="Width.Is100">
                                 <Heading Size="HeadingSize.Is5">@context.Title</Heading>
-                                <Button Color="Color.Primary" To="@($"/recipe/{context.Id}")">
-                                    View <Icon Name="IconName.Link" />
-                                </Button>
+                                <Buttons>
+                                    <Button Size="Size.Small" Type="ButtonType.Button" Color="Color.Danger" Clicked="@(() => DeleteRecipeAsync(context.Id))">Delete <Icon Name="IconName.Delete" /></Button>
+                                    <Button Size="Size.Small" Type="ButtonType.Button" Color="Color.Primary" Clicked="@(() => EditRecipeAsync(context.Title,context.Id))">Edit <Icon Name="IconName.Edit" /></Button>
+                                    <Button Size="Size.Small" Type="ButtonType.Link" Color="Color.Info" To="@($"recipe/{context.Id}")">
+                                        View <Icon Name="IconName.Link"/>
+                                    </Button>
+                                </Buttons>
                             </Div>
                             <Paragraph Margin="Margin.Is1.FromBottom">
                                 @context.Description

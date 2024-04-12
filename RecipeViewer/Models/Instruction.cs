@@ -4,7 +4,7 @@ namespace RecipeViewer.Models;
 
 public class Instruction
 {
-    public Guid Id { get; set; }
+    public Guid Id { get; set; } = Guid.NewGuid();
     [Required]
     public string Title { get; set; }
     [Required]

@@ -6,6 +6,6 @@ public sealed class Recipe
     public string Title { get; set; }
     public string Description { get; set; }
     public string? ImageUrl { get; set; }
-    public IEnumerable<Ingredient> Ingredients { get; set; } = [];
-    public IEnumerable<Instruction> Instructions { get; set; } = [];
+    public ICollection<Ingredient> Ingredients { get; set; } = [];
+    public ICollection<Instruction> Instructions { get; set; } = [];
 }

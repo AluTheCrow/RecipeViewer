@@ -9,6 +9,7 @@ public interface IFileUploadRepository
 {
     ValueTask<string> UploadFileAsync(Guid recipeId, Stream stream, CancellationToken cancellationToken = default);
     Task<Stream> GetBlobAsStreamAsync(string url, CancellationToken cancellationToken = default);
+    ValueTask<bool> DeleteBlobAsync(Guid id, string url, CancellationToken cancellationToken = default);
 }
 
 internal sealed class FileUploadRepository(IModuleFactory jsModuleFactory, ILogger<FileUploadRepository> logger, RecyclableMemoryStreamManager recyclableMemoryStreamManager, ObjectUrlService objectUrlService) : IFileUploadRepository
@@ -40,6 +41,29 @@ internal sealed class FileUploadRepository(IModuleFactory jsModuleFactory, ILogg
         var blobData = await objectUrlService.FetchData(url, cancellationToken);
         await objectUrlService.Revoke(url, cancellationToken);
         return recyclableMemoryStreamManager.GetStream(blobData);
+    }
+
+    public async ValueTask<bool> DeleteBlobAsync(Guid id, string url, CancellationToken cancellationToken = default)
+    {
+        if (id == Guid.Empty || String.IsNullOrWhiteSpace(url))
+        {
+            logger.LogError("Url is null or empty");
+            return false;
+        }
+
+        try
+        {
+            await _recipeImageDb.RecipeImages.Delete(id, cancellationToken);
+
+            await objectUrlService.Revoke(url, cancellationToken);
+
+            return true;
+        }
+        catch (Exception ex)
+        {
+            logger.LogError(ex, "Error deleting blob: {Message}", ex);
+            return false;
+        }
     }
 
     private async ValueTask<byte[]> DecomposeStreamAsync(Stream stream, CancellationToken cancellationToken)

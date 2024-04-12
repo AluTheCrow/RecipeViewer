@@ -1,18 +1,17 @@
-using BlazorDexie.Extensions;
 using Blazorise;
 using Blazorise.Bootstrap5;
 using Blazorise.Icons.FontAwesome;
 using Blazorise.LoadingIndicator;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.IO;
 using RecipeViewer;
 using RecipeViewer.Data;
-using RecipeViewer.Data.IndexedDb;
+using RecipeViewer.Data.Extensions;
 using Serilog;
 using Serilog.Formatting.Compact;
 using Serilog.Sinks.SystemConsole.Themes;
+using System.Diagnostics.CodeAnalysis;
 
 Log.Logger = new LoggerConfiguration()
     .MinimumLevel.Debug()
@@ -36,12 +35,12 @@ try
 
     builder.Services.AddLogging(loggingBuilder => loggingBuilder.AddSerilog(dispose: true));
     builder.Services.AddSingleton(_ => new RecyclableMemoryStreamManager());
+    builder.Services.AddSingleton<RecipeViewerDbService<AppDbContext>>();
     builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
     builder.Services
         .AddBlazorise(options =>
         {
             options.Immediate = true;
-            options.ProductToken = "CjxRBHF6NQw9WwJ5fjI1BlEAc3o1CjxXAXl8MQs4bjoNJ2ZdYhBVCCo/CThVPUsNalV8Al44B2ECAWllMit3cWhZPUsCbFtpDUMkGnxIaVliJClwVG0RPUsRWnxNN3EGHEx8Uzx9ABZaZ14sZxIRWgJCLG8NB0hxWDA9SxFaeVk3fwIBSGhAJmQEEVp1TTtvHhxKb188b3sASmdAKn0IGlY1BjxvAgZEalgwbx4DRGBTPGIOGVZnU1l+DhFJcUEqZBJDD2dTL3kSGlNxSTRvHgNEYFM8Yg4ZVmdTWX4OEUlxQSpkEkMPZ1M3YgQLU3FJNG8eA0RgUzxiDhlWZ1NZfg4RSXFBKmQSQw9zfjAEGX1NTmE5YQwlVX1rVV9zfFNrZFVbdRp0XGYIaBJ+TlBBLWUgejVIPzRHIH5xXEJWUSICbRd/JF93AzNtdCtSBnpkb0tSeXI0UGl/ElgoCk4LNBF4JAVcTltRWzZ5Zhd8FlExL2BtWxt+MDtgWlVXZTYHNHA5W1kPPkpaNC5hcAVyXEABYyYCYm17D14gNDNuZxdYIwNBdWYVWzN/XWBdFXwHCipCPRAN";
         })
         .AddBootstrap5Components()
         .AddBootstrap5Providers()
@@ -50,19 +49,10 @@ try
 
     builder.RootComponents.Add<App>("#app");
     builder.RootComponents.Add<HeadOutlet>("head::after");
-
-    builder.Services.AddDbContextFactory<AppDbContext>(options =>
-            options
-                .UseSqlite($"Filename={DbConstants.RecipeDbName}")
-#if DEBUG
-                .EnableSensitiveDataLogging()
-                .EnableDetailedErrors()
-#endif
-    );
-    builder.Services.AddDexieWrapper();
-    builder.Services.AddScoped<RecipeImageDb>();
-    builder.Services.AddScoped<IFileUploadRepository, FileUploadRepository>();
-    await builder.Build().RunAsync();
+    builder.Services.AddRecipeDbServices();
+    await using var host = builder.Build();
+    await host.InitializeDbAsync();
+    await host.RunAsync();
 }
 catch (Exception e)
 {
@@ -72,4 +62,10 @@ catch (Exception e)
 finally
 {
     await Log.CloseAndFlushAsync();
+}
+
+public partial class Program
+{
+    [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)]
+    private static Type _keepDateOnly = typeof(DateOnly);
 }

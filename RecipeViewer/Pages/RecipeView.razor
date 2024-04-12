@@ -1,50 +1,65 @@
 ﻿@page "/recipe"
 @page "/recipe/{id}"
-<PageTitle>Recipe: @_recipe.Title</PageTitle>
+<PageTitle>Recipe: @_recipe?.Title</PageTitle>
 <Container Fluid="true"
            Border="Border.Is0.OnAll.Rounded.OnAll"
-           Shadow="Shadow.Large" 
-           Margin="Margin.Is4.OnY" 
+           Shadow="Shadow.Large"
+           Margin="Margin.Is4.OnY"
            Padding="Padding.Is3.OnX.Is2.OnY"
            Flex="Flex.Shrink.Is1">
-    <DisplayHeading Size="DisplayHeadingSize.Is2">
-        @_recipe.Title
-    </DisplayHeading>
-    <CardDeck>
-        <Card Shadow="Shadow.Default">
-            <CardBody>
-                <CardTitle Size="3">
-                    Ingredients
-                </CardTitle>
-                <CardText>
-                    <UnorderedList>
-                        <Repeater TItem="Ingredient" Items="@_recipe.Ingredients">
-                            <UnorderedListItem Margin="Margin.Is2.FromBottom">
-                                @context.Quantity @context.Unit <Strong>@context.Name</Strong>
-                            </UnorderedListItem>
-                        </Repeater>
-                    </UnorderedList>
-                </CardText>
-            </CardBody>
-        </Card>
-        <Card Shadow="Shadow.Default">
-            <CardBody>
-                <CardTitle Size="3">
-                    Instructions
-                </CardTitle>
-                <CardText>
-                    <DescriptionList>
-                        <Repeater TItem="Instruction" Items="@_recipe.Instructions.OrderBy(x => x.Order)">
-                            <DescriptionListTerm Margin="Margin.Is2.FromBottom" TextWeight="TextWeight.Bold">
-                                @context.Title
-                            </DescriptionListTerm>
-                            <DescriptionListDefinition>
-                                @context.Description
-                            </DescriptionListDefinition>
-                        </Repeater>
-                    </DescriptionList>
-                </CardText>
-            </CardBody>
-        </Card>
-    </CardDeck>
+    @if (_recipe is null)
+    {
+        <SpinKit Centered Type="SpinKitType.Bounce" Size="20px" />
+    }
+    else
+    {
+        <DisplayHeading Size="DisplayHeadingSize.Is2">
+            @_recipe.Title
+        </DisplayHeading>
+        <CardDeck>
+
+            <Card Shadow="Shadow.Default">
+                <CardImage Source="@_recipe.ImageUrl" Alt="@($"An image representing: {_recipe.Title}")"/>
+                <CardBody>
+                    <CardTitle Size="3">@_recipe.Title</CardTitle>
+                    <CardSubtitle>@_recipe.Description</CardSubtitle>
+                </CardBody>
+            </Card>
+            <Card Shadow="Shadow.Default">
+                <CardBody>
+                    <CardTitle Size="4">
+                        Ingredients
+                    </CardTitle>
+                    <CardText>
+                        <UnorderedList>
+                            <Repeater TItem="Ingredient" Items="@_recipe.Ingredients">
+                                <UnorderedListItem Margin="Margin.Is2.FromBottom">
+                                    @context.Quantity @context.Unit <Strong>@context.Name</Strong>
+                                </UnorderedListItem>
+                            </Repeater>
+                        </UnorderedList>
+                    </CardText>
+                </CardBody>
+            </Card>
+            <Card Shadow="Shadow.Default">
+                <CardBody>
+                    <CardTitle Size="4">
+                        Instructions
+                    </CardTitle>
+                    <CardText>
+                        <DescriptionList>
+                            <Repeater TItem="Instruction" Items="@_recipe.Instructions.OrderBy(x => x.Order)">
+                                <DescriptionListTerm Margin="Margin.Is2.FromBottom" TextWeight="TextWeight.Bold">
+                                    @context.Title
+                                </DescriptionListTerm>
+                                <DescriptionListDefinition>
+                                    @context.Description
+                                </DescriptionListDefinition>
+                            </Repeater>
+                        </DescriptionList>
+                    </CardText>
+                </CardBody>
+            </Card>
+        </CardDeck>
+    }
 </Container>

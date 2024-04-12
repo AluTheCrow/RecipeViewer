@@ -38,7 +38,7 @@
                         <Paragraph>
                             To allow SQLite usage in the browser, we needed to adjust some items within the application's configuration.
 
-                                <pre><code id="csprojContent" class="language-xml">@CsProjConstantsForDisplay.CsProjContent</code></Pre>
+                            <pre><code id="csprojContent" class="language-xml">@CsProjConstantsForDisplay.CsProjContent</code></Pre>
 
                         </Paragraph>
                         <Paragraph>
@@ -48,6 +48,30 @@
                         <Paragraph>
                             With IndexedDb storing images, we can then further leverage the browser's cache to store images and other static assets, reducing the need to download them each time the application is loaded, and provide a semi-permaent storage solution for the application.
                             The SQLite instance stores references to the images (as urls) stored in IndexedDB, allowing us to retrieve the images when needed.
+                        </Paragraph>
+                    </CardText>
+                </CardBody>
+            </Card>
+        </Column>
+    </Row>
+    <Row Margin="Margin.Is3.OnY">
+        <Column  ColumnSize="ColumnSize.IsFull.OnMobile.IsAuto.OnDesktop">
+            <Card Shadow="Shadow.Default">
+                <CardBody>
+                    <CardTitle Size="5">About the Javascript</CardTitle>
+                    <CardText>
+                        <Paragraph>
+                            While Blazor WebAssembly allows us to write C# code that runs in the browser, there are times when we need to interact with JavaScript. This is especially true when working with the browser's APIs, such as IndexedDB, or when we need to interact with JavaScript libraries or frameworks.
+                        </Paragraph>
+                        <Paragraph>
+                            We use <Blazorise.Link To="https://jquery.com/" Title="JQuery" Target="Target.Blank">JQuery<Icon Name="IconName.Link" /></Blazorise.Link> to interact with the DOM and provide a more robust and flexible API for working with the browser's APIs. This allows us to store and retrieve images as well as text data. We use JQuery as a way to enlarge the logo when the user hovers over it, 
+                            and provide code/syntax highlighting for the code snippets in the about page.
+                        </Paragraph>
+                        <Paragraph>
+                            We also use <Blazorise.Link To="https://highlightjs.org/" Title="Highlight.js" Target="Target.Blank">Highlight.js<Icon Name="IconName.Link" /></Blazorise.Link> to provide code/syntax highlighting for the code snippets in the about page. Highlight.js is a popular and flexible syntax highlighter that supports a wide range of languages and styles.
+                        </Paragraph>
+                        <Paragraph>
+                            Of course, we also use <Blazorise.Link To="https://dexie.org/" Title="Dexie.js" Target="Target.Blank">Dexie.js<Icon Name="IconName.Link"/></Blazorise.Link> to interact with IndexedDB, and we use the BlazorDexie library to provide a more robust and flexible API for working with the database. This allows us to store and retrieve images as well as text data.
                         </Paragraph>
                     </CardText>
                 </CardBody>
