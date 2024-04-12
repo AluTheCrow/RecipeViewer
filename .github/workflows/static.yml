@@ -36,7 +36,7 @@ jobs:
         run: dotnet workload install wasm-tools
         # publishes Blazor project to the release-folder
       - name: Publish .NET Core Project
-        run: dotnet publish ./RecipeViewer.sln  -c Release -o ${{ env.PUBLISH_DIR }} --nologo   
+        run: dotnet publish ./RecipeViewer/RecipeViewer.csproj  -c Release -o ${{ env.PUBLISH_DIR }} --nologo   
       - name: Rewrite base href
       # You may pin to the exact commit or the version.
       # uses: SteveSandersonMS/ghaction-rewrite-base-href@5b54862a8831e012d4f1a8b2660894415fdde8ec
