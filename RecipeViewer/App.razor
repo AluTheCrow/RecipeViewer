@@ -6,7 +6,22 @@
     <NotFound>
         <PageTitle>Not found</PageTitle>
         <LayoutView Layout="@typeof(MainLayout)">
-            <Alert TextColor="TextColor.Danger">Sorry, there's nothing at this address.</Alert>
+            <Div Margin="Margin.IsAuto.OnX" TextAlignment="TextAlignment.Center">
+                <Div Padding="Padding.Is5.OnY">
+                    <DisplayHeading Size="DisplayHeadingSize.Is1" TextWeight="TextWeight.Bold" TextColor="TextColor.Primary" Margin="Margin.Is4.FromBottom">
+                        404
+                    </DisplayHeading>
+                    <Paragraph TextSize="TextSize.ExtraLarge" Margin="Margin.Is4.FromBottom">
+                        Something's missing.
+                    </Paragraph>
+                    <Paragraph Margin="Margin.Is4.FromBottom">
+                        Sorry, the page you’re looking for doesn’t exist.
+                    </Paragraph>
+                    <Button Color="Color.Primary" Size="Size.Large" Type="ButtonType.Link" To="">
+                        Back to Homepage
+                    </Button>
+                </Div>
+            </Div>
         </LayoutView>
     </NotFound>
 </Router>
