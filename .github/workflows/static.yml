@@ -10,6 +10,10 @@ on:
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
+defaults:
+  run:
+    working-directory: RecipeViewer
+
 # Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
 permissions:
   contents: read
@@ -39,7 +43,7 @@ jobs:
         run: dotnet workload install wasm-tools
         # publishes Blazor project to the release-folder
       - name: Publish .NET Core Project
-        run: dotnet publish -c Release -o ${{ env.PUBLISH_DIR }} --nologo   
+        run: dotnet publish  -c Release -o ${{ env.PUBLISH_DIR }} --nologo   
       - name: Rewrite base href
       # You may pin to the exact commit or the version.
       # uses: SteveSandersonMS/ghaction-rewrite-base-href@5b54862a8831e012d4f1a8b2660894415fdde8ec
