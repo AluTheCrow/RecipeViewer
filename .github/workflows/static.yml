@@ -1,6 +1,7 @@
 # Simple workflow for deploying static content to GitHub Pages
 name: Deploy static content to Pages
-
+env:
+  PUBLISH_DIR: bin/Release/net8.0/publish/wwwroot
 on:
   # Runs on pushes targeting the default branch
   push:
@@ -20,10 +21,6 @@ permissions:
 concurrency:
   group: "pages"
   cancel-in-progress: false
-env:
-  CONFIGURATION: Release
-  DOTNET_CORE_VERSION: 7.0.x
-  WORKING_DIRECTORY: RecipeViewer
 jobs:
   # Single deploy job since we're just deploying
   deploy:
@@ -42,8 +39,19 @@ jobs:
         run: dotnet workload install wasm-tools
         # publishes Blazor project to the release-folder
       - name: Publish .NET Core Project
-        run: dotnet publish "${{ env.WORKING_DIRECTORY }}" -c ${{ env.CONFIGURATION }} -o release --nologo   
-      # add .nojekyll file to tell GitHub pages to not treat this as a Jekyll project. (Allow files and folders starting with an underscore)
+        run: dotnet publish -c Release -o release --nologo   
+      - name: Rewrite base href
+      # You may pin to the exact commit or the version.
+      # uses: SteveSandersonMS/ghaction-rewrite-base-href@5b54862a8831e012d4f1a8b2660894415fdde8ec
+        uses: SteveSandersonMS/ghaction-rewrite-base-href@v1
+        with:
+          # Path to the HTML file to be updated
+          html_path: ${{ env.PUBLISH_DIR }}/index.html
+          # New base href to be applied
+          base_href: REPOSITORY_NAME
+      # add .nojekyll file to tell GitHub pages to not treat this as a Jekyll project. (Allow files and folders starting with an underscore)    
+      - name: Add .nojekyll file
+        run: touch ${{ env.PUBLISH_DIR }}/.nojekyll
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4.5.0
         with:
