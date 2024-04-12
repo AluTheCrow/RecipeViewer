@@ -41,8 +41,20 @@ public partial class EditRecipeModal : ComponentBase
         try
         {
             await using var dbContext = await _dbContextFactory.CreateDbContextAsync();
+            var recipeToUpdate = await dbContext.Recipes.FindAsync(_recipe.Id);
 
-            dbContext.Recipes.Update(_recipe);
+            if (recipeToUpdate is null)
+            {
+                await ToastService.Error("Recipe not found.");
+                return;
+            }
+
+            recipeToUpdate.Title = _recipe.Title;
+            recipeToUpdate.Description = _recipe.Description;
+            recipeToUpdate.ImageUrl = _recipe.ImageUrl;
+            recipeToUpdate.Ingredients = _recipe.Ingredients;
+            recipeToUpdate.Instructions = _recipe.Instructions;
+
             await dbContext.SaveChangesAsync();
             await ToastService.Success("Recipe saved successfully.");
             await CloseModalAsync();
