@@ -37,7 +37,7 @@ jobs:
           dotnet-version: 8.x # optional
         # publishes Blazor project to the release-folder
       - name: Publish .NET Core Project
-        run: dotnet publish ~/RecipeViewer/RecipeViewer.csproj -c Release -o release --nologo   
+        run: dotnet publish ~/RecipeViewer.csproj -c Release -o release --nologo   
       # add .nojekyll file to tell GitHub pages to not treat this as a Jekyll project. (Allow files and folders starting with an underscore)
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4.5.0
